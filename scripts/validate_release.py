@@ -33,6 +33,8 @@ def main() -> int:
     require(ROOT / "THIRD_PARTY_NOTICES.md", errors)
     require(ROOT / "LICENSE_SCOPE.md", errors)
     require(ROOT / "pipeline" / "readme.md", errors)
+    require(ROOT / "pipeline" / "group_manifest.example.csv", errors)
+    require(ROOT / "models" / "YOLOv7" / "METRICS_PROVENANCE.md", errors)
 
     for model_name in MODEL_DIRS:
         model_root = ROOT / "models" / model_name

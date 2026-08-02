@@ -13,6 +13,7 @@
 - PR, F1, precision, recall, confusion-matrix, and loss-summary figures
 - Architecture-specific reproduction configuration records
 - Weight hashes and parameter counts
+- Final-epoch versus best-fitness metric provenance in `METRICS_PROVENANCE.md`
 
 ## Intentionally excluded from the GitHub folder
 

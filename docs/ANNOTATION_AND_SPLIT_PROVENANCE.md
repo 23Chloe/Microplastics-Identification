@@ -40,7 +40,9 @@ historical benchmark must therefore be treated as having an unresolved
 same-source leakage risk. The portable pipeline now documents a prospective
 safe workflow: assign source groups to splits first, and augment only within the
 training split. This prospective safeguard does not validate the historical
-benchmark retroactively.
+benchmark retroactively. The current `divide_dataset.py` requires an explicit
+`stem,group_id` mapping, keeps each source group in one subset, uses a recorded
+seed, and writes the resulting membership manifest.
 
 ## Records still required
 
