@@ -18,5 +18,7 @@
 
 ## Remaining limitation
 
-The exact upstream commit and the run-resolved optimizer identity were not
-preserved in the supplied archive. Neither value is inferred.
+The run-argument dictionaries identify the optimizer as SGD. The exact upstream
+commit was not preserved: checkpoint fields for Git remote, branch, and commit
+are null. The bundled source identifies itself as YOLOv5 version 7.0, but that
+does not establish an exact commit.

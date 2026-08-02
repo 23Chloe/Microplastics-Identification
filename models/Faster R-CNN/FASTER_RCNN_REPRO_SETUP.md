@@ -15,7 +15,7 @@
 | Weight decay | 0 |
 | Seed | 11 |
 
-These values are directly encoded in `train.py`. Before running the script,
-restore and verify the missing `nets/`, `utils/`, and `model_data/` directories
-from the exact source version used by the authors. Do not mix arbitrary newer
-implementations into this archive and call the result an exact reproduction.
+These values are directly encoded in `train.py`. The missing local modules were
+restored from the evidence-matched upstream commit
+`d81ba09f9c961e7ae07612e638a242f18e2c50fe`, and the three-class mapping is
+included. A verified final checkpoint and dataset are still required for a run.

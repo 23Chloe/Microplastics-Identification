@@ -15,11 +15,11 @@
 | Warm-up | 3 epochs |
 | Patience | 100 |
 | Seed | 0 |
-| Optimizer | author verification required |
+| Optimizer | SGD |
 
 The settings above were recovered from archived checkpoint/run metadata. The
-optimizer identity was not independently recoverable and is deliberately left
-unresolved.
+serialized optimizer state was stripped, but the retained run-argument
+dictionary explicitly records `optimizer=SGD` for all three variants.
 
 ## Command template
 
@@ -35,4 +35,5 @@ python train.py --data data/my_data.yaml --img 640 --batch 32 --epochs 400 \
 Use the corresponding `yolov5s.yaml` or `yolov5m.yaml` for the other variants.
 Before claiming an exact rerun, verify that the selected hyperparameter file
 reproduces `lr0=0.01`, `lrf=0.01`, momentum `0.937`, weight decay `0.0005`, and
-three warm-up epochs, and supply the retained optimizer identity.
+three warm-up epochs. The exact upstream source commit remains unresolved
+because the checkpoint Git fields are null.

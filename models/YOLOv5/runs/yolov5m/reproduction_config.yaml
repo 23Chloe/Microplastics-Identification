@@ -5,7 +5,7 @@ data: data/my_data.yaml
 epochs: 400
 batch_size: 32
 img_size: 640
-optimizer: null  # not independently recoverable; author verification required
+optimizer: SGD  # recovered from the checkpoint run-argument dictionary
 lr0: 0.01
 lrf: 0.01
 momentum: 0.937

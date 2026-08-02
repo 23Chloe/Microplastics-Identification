@@ -19,4 +19,7 @@ mixup: 0.15
 early_stopping: false
 seed: 2
 checkpoint_selection: best_fitness
+reported_metrics_source: final_epoch_results_txt
+reported_metrics_epoch: 399
+best_fitness_epoch: 399
 status: complete
