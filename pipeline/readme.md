@@ -12,15 +12,18 @@
 
 4\. Statistically analyze the category information of the labeled file
 
-5\. Augmentation the "film" category separately and then augmentation all categories together-- document:
-
-*Microplastic-Image-Recognition\\pipeline\\data augmentation.py*
-
-6. Split the dataset -- document:
+5\. Split source images into training, validation, and test sets before any
+augmentation. This prevents augmented derivatives of one source image from
+crossing dataset boundaries -- document:
 
 *Microplastic-Image-Recognition\\pipeline\\divide\_dataset.py*
 
-7. Convert the format of the labeled file according to the input requirements of different models (optional) -- document:
+6\. Apply augmentation to the training set only. The film class can receive a
+higher augmentation multiplier -- document:
+
+*Microplastic-Image-Recognition\\pipeline\\data augmentation.py*
+
+7. Convert the annotation format according to the input requirements of each model (optional) -- document:
 
 *Microplastic-Image-Recognition\\pipeline\\json\_txt.py*
 
@@ -71,8 +74,17 @@ paths are embedded in the published scripts. Run `python "<script>.py" --help`
 to see the arguments for each utility. For example:
 
 ```bash
-python "Slide window cropping.py" --input-folder dataset/global_images --output-folder dataset/tiles
-python divide_dataset.py --input-images dataset/images --input-json dataset/jsons --output-root dataset/splits
-python APP5.0.py --model-path weights/best.pt --input-folder dataset/test/images --output-folder outputs
+python "Slide window cropping.py" --input-folder dataset/global_images --output-folder dataset/tiles --edge-mode discard
+python divide_dataset.py --input-images dataset/images --input-json dataset/jsons --output-root dataset/splits --seed 0
+python APP5.0.py --model-path models/YOLOv5/weights/best.pt --input-folder dataset/test/images --output-folder outputs
 ```
+
+The historical experiment archive must be checked separately to confirm that
+its split membership was fixed before augmentation. The safer order documented
+above must not be used retroactively to claim that an unverified archived split
+followed the same procedure.
+
+`--edge-mode discard` preserves the archived full-tile cropping behavior.
+`--edge-mode cover` also includes border regions and pads images smaller than
+one tile. Record the selected mode because it changes the generated dataset.
 

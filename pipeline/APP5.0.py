@@ -6,6 +6,7 @@ import numpy as np
 import pandas as pd
 import time
 from collections import defaultdict
+from pathlib import Path
 
 # Process images of different sizes by cropping and padding them to 1280 x 1280,
 # running detection, summarizing predictions, and stitching the result tiles.
@@ -16,18 +17,28 @@ parser.add_argument("--model-path", required=True, help="Path to the trained YOL
 parser.add_argument("--input-folder", required=True, help="Directory containing input images.")
 parser.add_argument("--output-folder", required=True, help="Directory used for detection results.")
 parser.add_argument("--tile-size", type=int, default=1280, help="Square tile size in pixels.")
+parser.add_argument(
+    "--yolov5-repo",
+    default=str(Path(__file__).resolve().parents[1] / "models" / "YOLOv5"),
+    help="Path to the bundled YOLOv5 source directory.",
+)
 args = parser.parse_args()
 
 model_path = args.model_path
 input_folder = args.input_folder
 output_base_folder = args.output_folder
 tile_size = args.tile_size
+if tile_size <= 0:
+    parser.error("--tile-size must be a positive integer.")
 os.makedirs(output_base_folder, exist_ok=True)
 
 # === 2. Load the model ===
 print("Loading model...")
 start_load_time = time.time()
-model = torch.hub.load('ultralytics/yolov5', 'custom', path=model_path, trust_repo=True)
+yolov5_repo = Path(args.yolov5_repo).resolve()
+if not (yolov5_repo / "hubconf.py").is_file():
+    parser.error(f"YOLOv5 source directory is invalid: {yolov5_repo}")
+model = torch.hub.load(str(yolov5_repo), 'custom', path=model_path, source='local')
 model.conf = 0.25  # Confidence threshold
 load_time = time.time() - start_load_time
 print(f"Model loaded in {load_time:.2f} s")
@@ -36,7 +47,7 @@ print(f"Model loaded in {load_time:.2f} s")
 class_colors = {
     'fragment': (0, 255, 0),    # Green
     'fiber': (255, 0, 0),       # Blue
-    'lament': (0, 0, 255),      # Red
+    'film': (0, 0, 255),        # Red
     # Add other classes as needed.
 }
 
@@ -75,7 +86,7 @@ total_images = 0
 total_processing_time = 0
 
 for file in os.listdir(input_folder):
-    if not file.lower().endswith(('.jpg', '.png', '.jpeg', '.bmp', '.tif')):
+    if not file.lower().endswith(('.jpg', '.png', '.jpeg', '.bmp', '.tif', '.tiff')):
         continue
 
     total_images += 1
@@ -135,7 +146,7 @@ for file in os.listdir(input_folder):
             padding_info.append((padding_flag, tile_h, tile_w))
 
     # === 7. Detect and render ===
-    results_list, result_images = [], []
+    results_list, result_images, result_positions = [], [], []
     all_detections = []  # Store detections in full-image coordinates.
     tile_times = []  # Store processing time for each tile.
 
@@ -226,6 +237,7 @@ for file in os.listdir(input_folder):
             draw_detection(result_img, tile_bbox, class_name, confidence, color)
         
         result_images.append(result_img)
+        result_positions.append(pos_info)
 
         # Save the rendered tile.
         detected_path = os.path.join(output_img_folder, f"{filename}_detected_{i}_{j}.jpg")
@@ -242,7 +254,8 @@ for file in os.listdir(input_folder):
             "Processing time (s)": f"{tile_time:.2f}",
             "Detection count": sum(class_counts.values())
         }
-        for cls in model.names.values():
+        class_names = model.names.values() if isinstance(model.names, dict) else model.names
+        for cls in class_names:
             result_row[cls] = class_counts.get(cls, 0)
         result_row["Total"] = sum(class_counts.values())
         results_list.append(result_row)
@@ -255,7 +268,7 @@ for file in os.listdir(input_folder):
         stitched_canvas = np.zeros((stitched_h, stitched_w, 3), dtype=np.uint8)
         
         # Place each rendered tile at its grid position.
-        for idx, (result_img, pos_info) in enumerate(zip(result_images, positions)):
+        for result_img, pos_info in zip(result_images, result_positions):
             i, j, _, _, _, _ = pos_info
             y_start = i * tile_size
             x_start = j * tile_size
@@ -296,8 +309,9 @@ for file in os.listdir(input_folder):
     # Add a summary row.
     summary_row = {"SubImage": "Summary", "Position": "All"}
     total_count = 0
-    for cls in model.names.values():
-        cls_total = df[cls].sum()
+    class_names = model.names.values() if isinstance(model.names, dict) else model.names
+    for cls in class_names:
+        cls_total = df[cls].sum() if cls in df.columns else 0
         summary_row[cls] = cls_total
         total_count += cls_total
     summary_row["Total"] = total_count
