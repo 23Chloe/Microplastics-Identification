@@ -62,7 +62,7 @@
 
 
 
-<b>Quickly apply the model test dataset：</b>*Microplastic-Image-Recognition\\pipeline\\APP5.0.py*
+<b>Quickly apply the model test dataset:</b> *Microplastic-Image-Recognition\\pipeline\\APP5.0.py*
 
 ## Portable command-line usage
 

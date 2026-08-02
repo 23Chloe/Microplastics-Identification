@@ -3,10 +3,10 @@ import cv2
 import os
 
 def split_image_only(image_path, output_dir, patch_size=1280, overlap=0.2):
-    """ 仅切割单张图像为指定大小的 patch，支持设置重叠比例 """
+    """Split one image into fixed-size patches with a configurable overlap."""
     image = cv2.imread(image_path)
     if image is None:
-        print(f"❌ 无法读取图像: {image_path}")
+        print(f"Error: unable to read image: {image_path}")
         return
 
     height, width = image.shape[:2]
@@ -22,29 +22,29 @@ def split_image_only(image_path, output_dir, patch_size=1280, overlap=0.2):
             cv2.imwrite(patch_filename, patch)
             patch_id += 1
 
-    print(f"✅ {base_name}: 切割为 {patch_id} 张 patch，保存至 {output_dir}")
+    print(f"{base_name}: created {patch_id} patches in {output_dir}")
 
 def batch_split_images(input_folder, output_folder, patch_size=1280, overlap=0.2):
-    """ 批量处理文件夹中的所有图像 """
+    """Process all supported images in a directory."""
     os.makedirs(output_folder, exist_ok=True)
 
     supported_ext = ('.jpg', '.jpeg', '.png', '.bmp', '.tif', '.tiff')
     image_files = [f for f in os.listdir(input_folder) if f.lower().endswith(supported_ext)]
 
     if not image_files:
-        print("⚠️ 未找到图像文件，请确认文件夹路径是否正确。")
+        print("Warning: no image files found; verify the input directory.")
         return
 
     for image_name in image_files:
         image_path = os.path.join(input_folder, image_name)
         split_image_only(image_path, output_folder, patch_size, overlap)
 
-    print("🎉 所有图像已处理完成！")
+    print("All images have been processed.")
 
 
-# =========================== 🟢 你的输入区域 ===========================
+# =========================== User inputs ===========================
 
-# 输入图像文件夹路径（替换为你的图像所在文件夹）
+# Input image directory.
 parser = argparse.ArgumentParser(description="Crop images into overlapping square tiles.")
 parser.add_argument("--input-folder", required=True, help="Directory containing source images.")
 parser.add_argument("--output-folder", required=True, help="Directory for cropped image tiles.")
@@ -54,16 +54,16 @@ args = parser.parse_args()
 
 input_folder = args.input_folder
 
-# 输出 patch 保存文件夹
+# Output directory for image patches.
 output_folder = args.output_folder
 
-# patch 尺寸（建议1280）
+# Patch size (1280 pixels is recommended for this workflow).
 patch_size = args.patch_size
 
-# 重叠比例（0.2 表示 20% 重叠）
+# Overlap ratio (0.2 means 20% overlap).
 overlap = args.overlap
 
-# 执行批量切图
+# Run batch cropping.
 batch_split_images(input_folder, output_folder, patch_size, overlap)
 
 
