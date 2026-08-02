@@ -1,0 +1,10 @@
+# Microplastic detection dataset template.
+# Replace the three paths below with local image-list files after downloading
+# or requesting access to the dataset. Do not commit machine-specific paths.
+
+train: /path/to/train.txt
+val: /path/to/val.txt
+test: /path/to/test.txt
+
+nc: 3
+names: ['fragment', 'fiber', 'film']
