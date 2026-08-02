@@ -17,8 +17,8 @@ known publication blockers. Short-lived agent branches are not release branches.
 - `models/YOLOv5/`: recovered YOLOv5 source package with run configurations and checkpoint hashes.
 - `models/YOLOv7/`: verified YOLOv7 reproduction package. This directory was not changed by the later source-code uploads.
 - `models/YOLOv8/`: official Ultralytics v8.2.35 source with recovered run configurations and checkpoint hashes.
-- `models/DETR-Transformer/`: partial source archive with missing dataset modules explicitly documented.
-- `models/Faster R-CNN/`: partial source archive with missing local modules explicitly documented.
+- `models/DETR-Transformer/`: recovered author archive with the evidence-matched upstream `datasets/` module restored.
+- `models/Faster R-CNN/`: recovered author archive with evidence-matched upstream `nets/`, `utils/`, and `model_data/` components restored.
 
 Each model directory follows the same publication pattern where the evidence
 permits it: a model-level README, a release manifest, a reproducibility setup,
@@ -26,11 +26,11 @@ lightweight run configurations, and a checkpoint inventory under `weights/`.
 
 ## Data and model weights
 
-The image dataset, trained checkpoints, experiment outputs, and other large binary artifacts are not stored in ordinary Git history. Dataset configurations use repository-relative paths and expect the corresponding images and labels under `dataset/` when the dataset is supplied separately. See the model-specific documentation for weight placement.
+The image dataset, trained checkpoints, experiment outputs, and other large binary artifacts are not stored in ordinary Git history. Selected checkpoints are published in the [`model-weights-v1`](https://github.com/23Chloe/Microplastics-Identification/releases/tag/model-weights-v1) release; model-specific `weights/README.md` files record direct URLs, sizes, and SHA-256 values. Dataset configurations use repository-relative paths and expect the corresponding images and labels under `dataset/` when the dataset is supplied separately.
 
 ## Reproducibility status
 
-Machine-specific absolute paths were replaced with command-line arguments or repository-relative paths in the published utilities. The supplied DETR and Faster R-CNN archives did not contain every locally imported dependency; their exact limitations are recorded in the respective `ARCHIVE_NOTES.md` files and are not silently inferred or reconstructed.
+Machine-specific absolute paths were replaced with command-line arguments or repository-relative paths in the published utilities. Missing DETR and Faster R-CNN source modules were restored only where the retained files matched identified upstream revisions; unresolved run-level evidence remains explicit in the respective `ARCHIVE_NOTES.md` files.
 
 The repository validation workflow performs dependency-free syntax and release
 structure checks. It does not claim that incomplete model packages can train or

@@ -22,4 +22,6 @@
 
 - Any additional run-level tuning log beyond the settings embedded in
   `train.py`
-- A verified final-checkpoint download URL
+
+The selected archive checkpoint is published in the `model-weights-v1`
+GitHub Release, with its URL and SHA-256 recorded in `weights/README.md`.

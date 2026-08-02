@@ -14,10 +14,9 @@ YOLOv7-E6E files are too large for ordinary Git storage.
 2. Replace the entire repository `models/YOLOv7` directory with this directory.
 3. Do not merge the old `runs`, checkpoints, pretrained weights, bytecode, or
    machine-specific dataset caches back into this directory.
-4. Publish the three verified weights supplied in the sibling
-   `02_三个正确模型权重_单独发布` directory using Git LFS, GitHub Releases,
-   Zenodo, Figshare, or another stable archive.
-5. Add the resulting download URLs to `weights/README.md`.
+4. Use the three verified weights published in the `model-weights-v1` GitHub
+   Release; do not substitute the old same-sized archive files.
+5. Verify downloads against the SHA-256 values in `weights/README.md`.
 
 ## Correct training entry points and configurations
 

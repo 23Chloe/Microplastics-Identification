@@ -25,7 +25,7 @@
 
 ## Weight distribution
 
-The three verified final weights are supplied separately in the final package.
-Publish them using Git LFS, GitHub Releases, or a stable external archive, then
-add their download URLs to `weights/README.md`.
+The three verified final weights are published in the `model-weights-v1`
+GitHub Release. Direct URLs and SHA-256 values are recorded in
+`weights/README.md`.
 

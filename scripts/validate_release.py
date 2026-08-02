@@ -57,6 +57,23 @@ def main() -> int:
             if NON_ASCII.search(text):
                 errors.append(f"Non-ASCII source text remains in {path.relative_to(ROOT)}")
 
+    for source_root in (ROOT / "pipeline", ROOT / "models"):
+        for path in source_root.rglob("*.py"):
+            text = path.read_text(encoding="utf-8")
+            if HAN.search(text):
+                errors.append(f"Chinese source text remains in {path.relative_to(ROOT)}")
+
+    weight_readmes = tuple(
+        ROOT / "models" / model_name / "weights" / "README.md"
+        for model_name in MODEL_DIRS
+    )
+    for path in weight_readmes:
+        require(path, errors)
+        if path.exists():
+            text = path.read_text(encoding="utf-8")
+            if "Add after publishing" in text or "URL pending" in text:
+                errors.append(f"Unresolved weight URL placeholder remains in {path.relative_to(ROOT)}")
+
     for legacy_path in (
         Path("models/DETR-Transformer/models/not.py"),
         Path("models/DETR-Transformer/predict_csdn.py"),

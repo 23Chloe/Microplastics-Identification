@@ -78,7 +78,7 @@ def is_ascii(s=""):
     return len(s.encode().decode("ascii", "ignore")) == len(s)
 
 
-def is_chinese(s="人工智能"):
+def is_chinese(s=""):
     """Determines if a string `s` contains any Chinese characters; returns `True` if so, otherwise `False`."""
     return bool(re.search("[\u4e00-\u9fff]", str(s)))
 
