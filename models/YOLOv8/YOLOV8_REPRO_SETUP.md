@@ -12,6 +12,7 @@
 | Batch size | 32 |
 | Input size | 640 x 640 |
 | Optimizer request | `auto` |
+| Reconstructed resolved optimizer | SGD, learning rate 0.01, momentum 0.9 |
 | Initial learning rate | 0.01 |
 | Final learning-rate factor | 0.01 |
 | Momentum | 0.937 |
@@ -20,8 +21,12 @@
 | Seed | 0 |
 | Close mosaic | final 10 epochs |
 
-The resolved optimizer selected by `optimizer=auto` was not retained and is not
-inferred.
+The optimizer state and console log were not retained. The resolved choice can
+nevertheless be reconstructed from the bundled 8.2.35 source: `auto` selects SGD
+when calculated iterations exceed 10,000. With 400 epochs and the reported
+training-set size, this threshold is exceeded. The same rule replaces the
+requested momentum of 0.937 with 0.9 and uses learning rate 0.01. This is a
+deterministic reconstruction, not a separately retained run artifact.
 
 ## Command template
 

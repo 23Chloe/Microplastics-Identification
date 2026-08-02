@@ -12,9 +12,11 @@ explicitly.
 - Entrypoint-default configuration record under `runs/detr-r50/`
 - Checkpoint filenames, sizes, and SHA-256 hashes under `weights/`
 
-## Blocking limitation
+## Restored source boundary
 
-The supplied archive does not contain the imported `datasets/` package,
-including `coco_eval.py` and `panoptic_eval.py`. The training entry point is
-therefore not standalone. `ARCHIVE_NOTES.md` and `RELEASE_MANIFEST.md` define
-the exact publication boundary.
+The missing official `datasets/` package and Apache-2.0 license were restored
+from `facebookresearch/detr` commit
+`29901c51d7fe8712168b8d0d64351170bc0f83e0`. The source import structure is
+complete after dependencies and data are supplied. Exact run-specific settings
+and the definitive author checkpoint remain unresolved; see `ARCHIVE_NOTES.md`
+and `RELEASE_MANIFEST.md`.

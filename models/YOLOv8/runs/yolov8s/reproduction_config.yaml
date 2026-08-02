@@ -10,7 +10,10 @@ epochs: 400
 batch_size: 32
 img_size: 640
 optimizer_request: auto
-resolved_optimizer: null
+resolved_optimizer: SGD  # reconstructed by the Ultralytics 8.2.35 auto-selection rule
+resolved_optimizer_lr: 0.01
+resolved_optimizer_momentum: 0.9
+resolution_evidence: source_rule_and_reported_training_set_size
 lr0: 0.01
 lrf: 0.01
 momentum: 0.937

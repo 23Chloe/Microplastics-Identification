@@ -35,3 +35,10 @@ Machine-specific absolute paths were replaced with command-line arguments or rep
 The repository validation workflow performs dependency-free syntax and release
 structure checks. It does not claim that incomplete model packages can train or
 that unavailable datasets and checkpoints have been independently verified.
+
+Evidence records:
+
+- [`docs/MODEL_METADATA_RECOVERY.md`](docs/MODEL_METADATA_RECOVERY.md)
+- [`docs/ANNOTATION_AND_SPLIT_PROVENANCE.md`](docs/ANNOTATION_AND_SPLIT_PROVENANCE.md)
+- [`THIRD_PARTY_NOTICES.md`](THIRD_PARTY_NOTICES.md)
+- [`LICENSE_SCOPE.md`](LICENSE_SCOPE.md)

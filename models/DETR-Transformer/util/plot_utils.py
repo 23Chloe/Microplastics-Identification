@@ -6,7 +6,7 @@ import pandas as pd
 import numpy as np
 import seaborn as sns
 import matplotlib.pyplot as plt
-import time  # 引入time模块以计算FPS
+import time
 
 from pathlib import Path, PurePath
 
@@ -78,34 +78,34 @@ def plot_precision_recall(files, naming_scheme='iter'):
         names = [f.stem for f in files]
     else:
         raise ValueError(f'not supported {naming_scheme}')
-    
+
     fig, axs = plt.subplots(ncols=2, figsize=(16, 5))
-    
+
     for f, color, name in zip(files, sns.color_palette("Blues", n_colors=len(files)), names):
-        start_time = time.time()  # 记录开始时间
+        start_time = time.time()
         data = torch.load(f)
-        
+
         # precision is n_iou, n_points, n_cat, n_area, max_det
         precision = data['precision']
         recall = data['params'].recThrs
         scores = data['scores']
-        
+
         # take precision for all classes, all areas and 100 detections
         precision = precision[0, :, :, 0, -1].mean(1)
         scores = scores[0, :, :, 0, -1].mean(1)
         prec = precision.mean()
         rec = data['recall'][0, :, 0, -1].mean()
 
-        # 计算FPS
-        end_time = time.time()  # 记录结束时间
-        fps = 1 / (end_time - start_time)  # 计算 FPS
+
+        end_time = time.time()
+        fps = 1 / (end_time - start_time)
 
         print(f'{naming_scheme} {name}: mAP@50={prec * 100: 05.1f}, ' +
               f'score={scores.mean():0.3f}, ' +
               f'f1={2 * prec * rec / (prec + rec + 1e-8):0.3f}, ' +
               f'recall={rec * 100: 05.1f}, ' +
               f'precision={prec * 100: 05.1f}, ' +
-              f'fps={fps:.2f}'  # 输出 FPS
+              f'fps={fps:.2f}'
               )
 
         axs[0].plot(recall, precision, c=color)

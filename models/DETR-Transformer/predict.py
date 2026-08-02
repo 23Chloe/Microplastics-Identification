@@ -10,7 +10,7 @@ import os
 import torchvision
 from torchvision.ops.boxes import batched_nms
 import cv2
-#-------------------------------------------------------------------------设置参数
+
 def get_args_parser():
     parser = argparse.ArgumentParser('Set transformer detector', add_help=False)
     parser.add_argument('--lr', default=1e-4, type=float)
@@ -89,19 +89,19 @@ def get_args_parser():
     return parser
 
 def box_cxcywh_to_xyxy(x):
-    #将DETR的检测框坐标(x_center,y_cengter,w,h)转化成coco数据集的检测框坐标(x0,y0,x1,y1)
+
     x_c, y_c, w, h = x.unbind(1)
     b = [(x_c - 0.5 * w), (y_c - 0.5 * h),
          (x_c + 0.5 * w), (y_c + 0.5 * h)]
     return torch.stack(b, dim=1)
 def rescale_bboxes(out_bbox, size):
-    #把比例坐标乘以图像的宽和高，变成真实坐标
+
     img_w, img_h = size
     b = box_cxcywh_to_xyxy(out_bbox)
     b = b * torch.tensor([img_w, img_h, img_w, img_h], dtype=torch.float32)
     return b
 def filter_boxes(scores, boxes, confidence=0.7, apply_nms=True, iou=0.5):
-    #筛选出真正的置信度高的框
+
     keep = scores.max(-1).values > confidence
     scores, boxes = scores[keep], boxes[keep]
     if apply_nms:
@@ -114,7 +114,7 @@ CLASSES = [
     'film','fragment','fiber'
 ]
 def plot_one_box(x, img, color=None, label=None, line_thickness=1):
-    #把检测框画到图片上
+
     tl = line_thickness or round(0.002 * (img.shape[0] + img.shape[1]) / 2) + 1  # line/font thickness
     color = color or [random.randint(0, 255) for _ in range(3)]
     c1, c2 = (int(x[0]), int(x[1])), (int(x[2]), int(x[3]))
@@ -129,21 +129,21 @@ def plot_one_box(x, img, color=None, label=None, line_thickness=1):
 def main(args):
     print(args)
     device = torch.device(args.device)
-    #------------------------------------导入网络
-    #下面的criterion是算损失函数要用的，推理用不到,postprocessors是解码用的，这里也没有用，用的是自己的。
-    model, criterion, postprocessors = build_model(args) 
-    #------------------------------------加载权重
+
+
+    model, criterion, postprocessors = build_model(args)
+
     checkpoint = torch.load(args.resume, map_location='cuda')
     model.load_state_dict(checkpoint['model'])
-    #------------------------------------把权重加载到gpu或cpu上
+
     model.to(device)
-    #------------------------------------打印出网络的参数大小
+
     n_parameters = sum(p.numel() for p in model.parameters() if p.requires_grad)
     print("parameters:",n_parameters)
-    
-    #------------------------------------设置好存储输出结果的文件夹
+
+
     output_dir = Path(args.output_dir)
-    #-----------------------------------读取数据集,进行推理
+
     image_Totensor=torchvision.transforms.ToTensor()
     image_file_path = os.listdir("data/coco/test")
     image_set = []
@@ -174,7 +174,7 @@ def main(args):
         cv2.imshow("images",image)
         cv2.waitKey(0)
         cv2.destroyAllWindows()
-        #保存图像
+
         image=Image.fromarray(image_array)
         image.save(os.path.join(args.output_dir,image_item))
 if __name__ == '__main__':

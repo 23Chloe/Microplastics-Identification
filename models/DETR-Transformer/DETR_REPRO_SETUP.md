@@ -21,9 +21,11 @@ The following values are directly visible in `main.py`:
 These are source defaults only. The supplied archive does not retain a complete
 run-specific record proving that every default was used for the benchmark.
 
-## Restoration required before training
+## Verification required before an exact benchmark rerun
 
-1. Restore the exact `datasets/` package version matching this source snapshot.
-2. Verify the dataset converter and class mapping against the archived labels.
-3. Verify the exact run arguments and checkpoint role.
-4. Only then run `main.py` with repository-relative data and output paths.
+The missing `datasets/` package was restored from the matching official DETR
+source boundary at commit `29901c51d7fe8712168b8d0d64351170bc0f83e0`.
+
+1. Verify the dataset converter and class mapping against the archived labels.
+2. Verify the exact run arguments and checkpoint role.
+3. Only then run `main.py` with repository-relative data and output paths.

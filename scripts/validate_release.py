@@ -16,6 +16,7 @@ MODEL_DIRS = (
     "Faster R-CNN",
 )
 HAN = re.compile(r"[\u3400-\u4dbf\u4e00-\u9fff]")
+NON_ASCII = re.compile(r"[^\x00-\x7f]")
 WINDOWS_ABSOLUTE = re.compile(r"[A-Za-z]:[\\/]")
 
 
@@ -29,6 +30,8 @@ def main() -> int:
 
     require(ROOT / "README.md", errors)
     require(ROOT / "RELEASE_STATUS.md", errors)
+    require(ROOT / "THIRD_PARTY_NOTICES.md", errors)
+    require(ROOT / "LICENSE_SCOPE.md", errors)
     require(ROOT / "pipeline" / "readme.md", errors)
 
     for model_name in MODEL_DIRS:
@@ -47,6 +50,21 @@ def main() -> int:
             errors.append(f"Chinese text remains in pipeline file: {path.relative_to(ROOT)}")
         if WINDOWS_ABSOLUTE.search(text):
             errors.append(f"Windows absolute path remains in pipeline file: {path.relative_to(ROOT)}")
+
+    for model_name in ("DETR-Transformer", "Faster R-CNN"):
+        for path in (ROOT / "models" / model_name).rglob("*.py"):
+            text = path.read_text(encoding="utf-8")
+            if NON_ASCII.search(text):
+                errors.append(f"Non-ASCII source text remains in {path.relative_to(ROOT)}")
+
+    for legacy_path in (
+        Path("models/DETR-Transformer/models/not.py"),
+        Path("models/DETR-Transformer/predict_csdn.py"),
+        Path("models/Faster R-CNN/import datetime.py"),
+        Path("models/Faster R-CNN/get_map50- 95.py"),
+    ):
+        if (ROOT / legacy_path).exists():
+            errors.append(f"Legacy scratch filename remains: {legacy_path}")
 
     for relative in (
         Path("models/YOLOv5/data/my_data.yaml"),

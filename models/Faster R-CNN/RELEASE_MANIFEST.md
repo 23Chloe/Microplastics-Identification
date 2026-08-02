@@ -3,6 +3,11 @@
 ## Included
 
 - Recovered training, inference, annotation, summary, and evaluation scripts
+- `nets/`, `utils/`, and MIT license restored from
+  `bubbliiiing/faster-rcnn-pytorch` commit
+  `d81ba09f9c961e7ae07612e638a242f18e2c50fe`
+- Three-class `model_data/classes.txt` reconstructed from retained dataset
+  configurations
 - Original dependency specification
 - Source-backed training configuration record
 - Final-checkpoint filenames, sizes, and SHA-256 hashes
@@ -13,10 +18,8 @@
 - Generated logs, TensorBoard events, output images, and VOC data
 - Machine-specific paths and caches
 
-## Missing from the supplied archive
+## Remaining evidence limitation
 
-- `nets/`
-- `utils/`
-- `model_data/`
 - Any additional run-level tuning log beyond the settings embedded in
   `train.py`
+- A verified final-checkpoint download URL

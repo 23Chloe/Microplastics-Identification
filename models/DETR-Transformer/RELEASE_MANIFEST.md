@@ -3,6 +3,8 @@
 ## Included
 
 - Recovered model definitions and transformer utilities
+- Official `datasets/` package and Apache-2.0 license restored from
+  `facebookresearch/detr` commit `29901c51d7fe8712168b8d0d64351170bc0f83e0`
 - `main.py`, `engine.py`, prediction scripts, Dockerfile, and requirements
 - Entrypoint-default configuration record
 - Archived checkpoint inventory with SHA-256 hashes
@@ -13,9 +15,8 @@
 - Generated outputs, caches, and machine-specific paths
 - Dataset images and annotations
 
-## Missing from the supplied archive
+## Remaining evidence limitation
 
-- The local `datasets/` package imported by `main.py` and `engine.py`
 - A complete run-specific optimizer, batch, learning-rate schedule, epoch, and
   seed record independently tied to the reported benchmark result
 

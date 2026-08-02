@@ -19,5 +19,8 @@
 
 ## Remaining limitation
 
-The optimizer was configured as `auto`; the resolved optimizer choice was not
-  retained as a separate run artifact.
+The optimizer was configured as `auto`; no optimizer state or console log was
+retained. From the bundled 8.2.35 selection rule and the reported training-set
+size, the resolved optimizer is reconstructed as SGD with learning rate 0.01
+and momentum 0.9. This reconstruction is explicitly distinguished from a saved
+run artifact.
