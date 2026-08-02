@@ -5,11 +5,15 @@ Source code supporting microplastic image detection, classification, and evaluat
 ## Repository layout
 
 - `pipeline/`: data conversion, augmentation, dataset splitting, tiled inference, timing, and counting utilities.
-- `models/YOLOv5/yolov5/`: recovered YOLOv5 source package.
+- `models/YOLOv5/`: recovered YOLOv5 source package with run configurations and checkpoint hashes.
 - `models/YOLOv7/`: verified YOLOv7 reproduction package. This directory was not changed by the later source-code uploads.
-- `models/YOLOv8/`: recovered YOLOv8 source package.
-- `models/DETR-Transformer/`: source files recovered from the supplied DETR archive.
-- `models/Faster R-CNN/`: source files recovered from the supplied Faster R-CNN archive.
+- `models/YOLOv8/`: official Ultralytics v8.2.35 source with recovered run configurations and checkpoint hashes.
+- `models/DETR-Transformer/`: partial source archive with missing dataset modules explicitly documented.
+- `models/Faster R-CNN/`: partial source archive with missing local modules explicitly documented.
+
+Each model directory follows the same publication pattern where the evidence
+permits it: a model-level README, a release manifest, a reproducibility setup,
+lightweight run configurations, and a checkpoint inventory under `weights/`.
 
 ## Data and model weights
 

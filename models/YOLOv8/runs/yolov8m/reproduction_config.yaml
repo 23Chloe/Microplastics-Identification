@@ -1,0 +1,21 @@
+model_name: YOLOv8m
+architecture: yolov8m.pt
+entrypoint: ultralytics CLI
+data: data/my_data.yaml
+run_metadata_version: 8.2.35
+bundled_source_version: 8.2.35
+upstream_commit: 8ea945cc8e3ecbd466dde73f89ae018b3d7079f1
+pretrained: true
+epochs: 400
+batch_size: 32
+img_size: 640
+optimizer_request: auto
+resolved_optimizer: null
+lr0: 0.01
+lrf: 0.01
+momentum: 0.937
+weight_decay: 0.0005
+patience: 100
+seed: 0
+close_mosaic: 10
+checkpoint_selection: best

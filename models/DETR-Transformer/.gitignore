@@ -1,6 +1,8 @@
 *.pth
 *.pt
-runs/
+runs/*
+!runs/detr-r50/
+!runs/detr-r50/reproduction_config.yaml
 data/
 __pycache__/
 *.pyc

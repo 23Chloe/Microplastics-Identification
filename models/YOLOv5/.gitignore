@@ -25,6 +25,12 @@
 
 storage.googleapis.com
 runs/*
+!runs/yolov5n/
+!runs/yolov5n/reproduction_config.yaml
+!runs/yolov5s/
+!runs/yolov5s/reproduction_config.yaml
+!runs/yolov5m/
+!runs/yolov5m/reproduction_config.yaml
 data/*
 data/images/*
 !data/*.yaml

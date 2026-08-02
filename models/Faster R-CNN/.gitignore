@@ -1,7 +1,9 @@
 *.pth
 *.pt
 logs/
-runs/
+runs/*
+!runs/faster-rcnn-resnet50/
+!runs/faster-rcnn-resnet50/reproduction_config.yaml
 VOCdevkit/
 img/
 img_out/
