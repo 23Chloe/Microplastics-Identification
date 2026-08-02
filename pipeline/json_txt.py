@@ -4,7 +4,7 @@ import json
 from PIL import Image
 from collections import defaultdict
 
-# === 路径配置 ===
+# === Path configuration ===
 parser = argparse.ArgumentParser(description="Convert LabelMe JSON annotations to YOLO text labels.")
 parser.add_argument("--json-folder", required=True, help="Directory containing LabelMe JSON files.")
 parser.add_argument("--image-folder", required=True, help="Directory containing the referenced images.")
@@ -17,17 +17,17 @@ label_output = args.label_output
 
 os.makedirs(label_output, exist_ok=True)
 
-# 类别映射
+# Class mapping
 label_map = {
     "fragment": 0,
     "fiber": 1,
     "film": 2
 }
 
-# 不合并 film 类别
+# Keep the film class separate.
 merge_film_to_fragment = False
 
-# 类别计数器
+# Class counter
 class_counts = defaultdict(int)
 
 def convert_shape_to_yolo(shape, img_w, img_h):
@@ -42,7 +42,7 @@ def convert_shape_to_yolo(shape, img_w, img_h):
     width = (xmax - xmin) / img_w
     height = (ymax - ymin) / img_h
 
-    # 裁剪到 0~1 范围内
+    # Clamp normalized coordinates to the [0, 1] range.
     x_center = min(max(x_center, 0), 1)
     y_center = min(max(y_center, 0), 1)
     width = min(max(width, 0), 1)
@@ -61,7 +61,7 @@ for file in os.listdir(json_folder):
 
     image_path = os.path.join(image_folder, data['imagePath'])
     if not os.path.exists(image_path):
-        print(f"⚠️ 图像文件不存在: {image_path}")
+        print(f"Warning: image file does not exist: {image_path}")
         continue
 
     img = Image.open(image_path)
@@ -72,9 +72,9 @@ for file in os.listdir(json_folder):
     for shape in data['shapes']:
         label_name = shape['label']
         
-        # 不合并 film 类别，直接使用原始类别
+        # Preserve the original class instead of merging film labels.
         if label_name not in label_map:
-            print(f"⚠️ 未知类别: {label_name}，跳过")
+            print(f"Warning: unknown class '{label_name}'; skipping it.")
             continue
         
         class_id = label_map[label_name]
@@ -82,7 +82,7 @@ for file in os.listdir(json_folder):
         txt_lines.append(f"{class_id} {x_center:.6f} {y_center:.6f} {width:.6f} {height:.6f}")
         class_counts[label_name] += 1
 
-    # 写入标签文件
+    # Write the converted label file.
     base_name = os.path.splitext(file)[0]
     txt_path = os.path.join(label_output, base_name + ".txt")
     with open(txt_path, 'w') as f:
@@ -90,9 +90,9 @@ for file in os.listdir(json_folder):
 
     converted_count += 1
 
-# 输出信息
-print(f"\n✅ 成功转换 JSON 文件数量：{converted_count}")
-print(f"📌 标签输出路径：{label_output}")
-print("\n📊 各类别数量统计：")
+# Report conversion results.
+print(f"\nSuccessfully converted JSON files: {converted_count}")
+print(f"Label output directory: {label_output}")
+print("\nAnnotation count by class:")
 for cls, count in class_counts.items():
-    print(f" - {cls:<10} : {count} 个标注")
+    print(f" - {cls:<10}: {count} annotations")

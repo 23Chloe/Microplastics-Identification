@@ -1,0 +1,17 @@
+model_name: DETR-R50
+configuration_status: bundled_entrypoint_defaults_only
+entrypoint: main.py
+backbone: resnet50
+optimizer: AdamW
+learning_rate: 0.0001
+backbone_learning_rate: 0.00001
+weight_decay: 0.0001
+batch_size: 8
+epochs: 400
+lr_drop_epoch: 200
+seed: 42
+num_queries: 100
+encoder_layers: 6
+decoder_layers: 6
+missing_dependency: datasets/
+exact_reported_run_verified: false

@@ -1,0 +1,20 @@
+model_name: Faster R-CNN ResNet-50
+configuration_status: source_backed_settings
+entrypoint: train.py
+input_size: [600, 600]
+backbone: resnet50
+optimizer: Adam
+initial_learning_rate: 0.0001
+minimum_learning_rate: 0.000001
+lr_scheduler: cosine
+freeze_train: true
+freeze_until_epoch: 20
+freeze_batch_size: 4
+unfreeze_until_epoch: 150
+unfreeze_batch_size: 2
+weight_decay: 0
+seed: 11
+missing_dependencies:
+  - nets/
+  - utils/
+  - model_data/

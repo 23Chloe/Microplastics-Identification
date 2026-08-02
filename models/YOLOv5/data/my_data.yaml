@@ -1,0 +1,13 @@
+# Microplastic detection dataset
+path: ../../dataset
+train: train/images
+val: val/images
+test: test/images
+
+nc: 3
+names:
+  0: fragment
+  1: fiber
+  2: film
+
+download: null

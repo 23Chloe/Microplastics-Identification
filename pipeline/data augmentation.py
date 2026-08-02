@@ -5,7 +5,7 @@ import numpy as np
 from imgaug.augmentables.bbs import BoundingBox, BoundingBoxesOnImage
 import imgaug.augmenters as iaa
 
-# 输入路径
+# Input paths.
 parser = argparse.ArgumentParser(description="Augment images and matching YOLO labels.")
 parser.add_argument("--input-images", required=True, help="Directory containing source images.")
 parser.add_argument("--input-labels", required=True, help="Directory containing source YOLO labels.")
@@ -16,20 +16,20 @@ args = parser.parse_args()
 input_image_folder = args.input_images
 input_label_folder = args.input_labels
 
-# 输出路径
+# Output paths.
 output_image_folder = args.output_images
 output_label_folder = args.output_labels
 
-# 创建输出文件夹
+# Create output directories.
 os.makedirs(output_image_folder, exist_ok=True)
 os.makedirs(output_label_folder, exist_ok=True)
 
-# 增强策略
+# Augmentation policy.
 augmenter = iaa.Sequential([
-    iaa.Fliplr(0.5),                        # 水平翻转
-    iaa.Affine(scale=(0.8, 1.2), rotate=(-15, 15)),  # 缩放 + 旋转
-    iaa.Multiply((0.8, 1.2)),               # 亮度
-    iaa.Crop(percent=(0, 0.2))              # 裁剪
+    iaa.Fliplr(0.5),                        # Horizontal flip
+    iaa.Affine(scale=(0.8, 1.2), rotate=(-15, 15)),  # Scaling and rotation
+    iaa.Multiply((0.8, 1.2)),               # Brightness adjustment
+    iaa.Crop(percent=(0, 0.2))              # Cropping
 ])
 
 for filename in os.listdir(input_image_folder):
@@ -43,11 +43,11 @@ for filename in os.listdir(input_image_folder):
     if not os.path.exists(label_path):
         continue
 
-    # 读取图像
+    # Read the image.
     image = cv2.imread(img_path)
     height, width = image.shape[:2]
 
-    # 读取标签
+    # Read the labels.
     with open(label_path, 'r') as f:
         lines = f.readlines()
 
@@ -72,19 +72,19 @@ for filename in os.listdir(input_image_folder):
 
     bbox_container = BoundingBoxesOnImage(bboxes, shape=image.shape)
 
-    # 判断增强倍数
+    # Select the augmentation multiplier.
     aug_num = 6 if has_film else 4
 
     for i in range(aug_num):
         image_aug, bbs_aug = augmenter(image=image, bounding_boxes=bbox_container)
         bbs_aug = bbs_aug.remove_out_of_image().clip_out_of_image()
 
-        # 保存增强图像
+        # Save the augmented image.
         out_img_name = f"aug_{i}_{filename}"
         out_img_path = os.path.join(output_image_folder, out_img_name)
         cv2.imwrite(out_img_path, image_aug)
 
-        # 保存增强标签
+        # Save the augmented labels.
         out_label_name = f"aug_{i}_{label_filename}"
         out_label_path = os.path.join(output_label_folder, out_label_name)
 
