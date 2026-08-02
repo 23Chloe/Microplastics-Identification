@@ -1,0 +1,9 @@
+*.pth
+*.pt
+logs/
+runs/
+VOCdevkit/
+img/
+img_out/
+__pycache__/
+*.pyc
